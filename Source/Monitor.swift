@@ -102,7 +102,7 @@ public class Monitor {
         }
     }
 
-    public func observe(callback: @escaping (Dispatch, Monitor) -> Void) {
+    public func observe(callback: @escaping (Dispatch) -> Void) {
         client.on(eventName: "sc-\(self.id)") { channel, message in
             guard let msg = message as? [String: Any] else { return }
             guard let type = msg["type"] as? String else { return }
@@ -110,10 +110,10 @@ public class Monitor {
             switch Types(rawValue: type) {
             case .action?:
                 let payload = msg["action"] as? String ?? ""
-                callback(.action(payload), self)
+                callback(.action(payload))
 
             case .dispatch?:
-                callback(self.dispatch(message: msg), self)
+                callback(self.dispatch(message: msg))
 
             default:
                 break
