@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
 
   spec.summary       = "Swift SDK for https://github.com/reduxjs/redux-devtools"
 
-  spec.homepage      = "https://github.com/msfrms/ReduxDevToolsSwift"
+  spec.homepage      = "https://github.com/msfrms/MonitorDevToolsSwift.git"
   
   spec.license       = "MIT"  
 
@@ -15,7 +15,7 @@ Pod::Spec.new do |spec|
   
   spec.swift_version = '5.0'
 
-  spec.source        = { :git => "https://github.com/msfrms/ReduxDevToolsSwift", :branch => "master" }
+  spec.source        = { :git => "https://github.com/msfrms/MonitorDevToolsSwift.git", :branch => "master" }
 
   spec.source_files  = "Source/*.swift"
   
