@@ -78,7 +78,7 @@ public class Monitor {
         client.connect()
     }
 
-    public func send<A: Encodable, S: Encodable>(action: Action<A, S>) {
+    public func send<A: Encodable, S: Encodable>(action: DevToolsAction<A, S>) {
         guard client.isConnected() else { return }
         let payload = action.toDictionary + ("id", id)
         client.emit(eventName: "log", data: payload as AnyObject)

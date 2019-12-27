@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,7 +18,7 @@
 		E41D948323B26DBC001373F4 /* MonitorDevToolsSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41D948223B26DBC001373F4 /* MonitorDevToolsSwiftTests.swift */; };
 		E41D949123B26E29001373F4 /* Monitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41D948E23B26E28001373F4 /* Monitor.swift */; };
 		E41D949223B26E29001373F4 /* CollectionOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41D948F23B26E28001373F4 /* CollectionOps.swift */; };
-		E41D949323B26E29001373F4 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41D949023B26E28001373F4 /* Action.swift */; };
+		E41D949323B26E29001373F4 /* DevToolsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41D949023B26E28001373F4 /* DevToolsAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +51,7 @@
 		E41D948423B26DBC001373F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E41D948E23B26E28001373F4 /* Monitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monitor.swift; sourceTree = "<group>"; };
 		E41D948F23B26E28001373F4 /* CollectionOps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOps.swift; sourceTree = "<group>"; };
-		E41D949023B26E28001373F4 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		E41D949023B26E28001373F4 /* DevToolsAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevToolsAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,6 @@
 				CD09D809D5387F634F459A03 /* Pods-MonitorDevToolsSwiftTests.debug.xcconfig */,
 				1050B41C2C1951507FAF21AA /* Pods-MonitorDevToolsSwiftTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -152,7 +151,7 @@
 			children = (
 				E41D948E23B26E28001373F4 /* Monitor.swift */,
 				E41D948F23B26E28001373F4 /* CollectionOps.swift */,
-				E41D949023B26E28001373F4 /* Action.swift */,
+				E41D949023B26E28001373F4 /* DevToolsAction.swift */,
 			);
 			path = Source;
 			sourceTree = SOURCE_ROOT;
@@ -326,7 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E41D949123B26E29001373F4 /* Monitor.swift in Sources */,
-				E41D949323B26E29001373F4 /* Action.swift in Sources */,
+				E41D949323B26E29001373F4 /* DevToolsAction.swift in Sources */,
 				E41D946C23B26DBB001373F4 /* AppDelegate.swift in Sources */,
 				E41D946E23B26DBB001373F4 /* SceneDelegate.swift in Sources */,
 				E41D947023B26DBB001373F4 /* ContentView.swift in Sources */,

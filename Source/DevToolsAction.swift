@@ -19,7 +19,7 @@ internal enum MonitorTypes: String, Codable {
     case undefined = "undefined"
 }
 
-public struct Action<A: Encodable, S: Encodable> {
+public struct DevToolsAction<A: Encodable, S: Encodable> {
     public let title: String
     public let action: A
     public let state: S
@@ -31,7 +31,7 @@ public struct Action<A: Encodable, S: Encodable> {
     }
 }
 
-extension Action {
+extension DevToolsAction {
 
     internal var toDictionary: [String: Any] {
         let encoder = JSONEncoder()
