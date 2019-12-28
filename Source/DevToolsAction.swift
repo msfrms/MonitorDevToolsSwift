@@ -50,10 +50,10 @@ extension DevToolsAction {
 
 public struct DevToolsImport<A: Decodable, S: Decodable>: Decodable {
 
-    let actionsById: [String: A]
-    let computedStates: [S]
-    let currentStateIndex: Int
-    let nextActionId: Int
-    let skippedActionIds: [Int]
-    let stagedActionIds: [Int]
+    public let actionsById: [String: A]
+    public let computedStates: [S]
+    public let currentStateIndex: Int
+    public let nextActionId: Int
+    public let skippedActionIds: [Int]
+    public let stagedActionIds: [Int]
 }
