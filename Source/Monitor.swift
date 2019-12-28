@@ -25,11 +25,16 @@ public class Monitor {
         case dispatch = "DISPATCH"
     }
 
+    public struct Import<A: Decodable, S: Decodable>: Decodable {
+        public let actions: [A]
+        public let states: [S]
+    }
+
     public enum Dispatch<A: Decodable, S: Decodable> {
         case action(A)
         case jumpToAction(A)
         case jumpToState(S)
-        case `import`(DevToolsImport<A, S>)
+        case `import`(Import<A, S>)
         case none
     }
 
@@ -128,7 +133,17 @@ public class Monitor {
                 guard let devToolsImport = try? JSONDecoder().decode(DevToolsImport<A, S>.self, from: json) else {
                     return
                 }
-                callback(.import(devToolsImport))
+                var actions: [A] = []
+                for (index, _) in devToolsImport.computedStates.enumerated() {
+                    let actionJson = devToolsImport.actionsById["\(index)"]?.action.payload ?? ""
+                    let actionData = actionJson.data(using: .utf8) ?? Data()
+                    if let action = try? JSONDecoder().decode(A.self, from: actionData) {
+                        actions.append(action)
+                    }
+                }
+                callback(.import(Import<A, S>(
+                    actions: actions,
+                    states: devToolsImport.computedStates)))
 
             default:
                 break
