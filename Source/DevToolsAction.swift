@@ -62,7 +62,7 @@ struct ImportAction: Decodable {
 struct DevToolsImport<A: Decodable, S: Decodable>: Decodable {
 
     let actionsById: [String: ImportAction]
-    let computedStates: [S]
+    let computedStates: [[String: S]]
     let currentStateIndex: Int
     let nextActionId: Int
     let skippedActionIds: [Int]

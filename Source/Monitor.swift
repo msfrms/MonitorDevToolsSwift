@@ -141,9 +141,10 @@ public class Monitor {
                         actions.append(action)
                     }
                 }
+                let states: [S] = devToolsImport.computedStates.compactMap { $0["state"] }
                 callback(.import(Import<A, S>(
                     actions: actions,
-                    states: devToolsImport.computedStates)))
+                    states: states)))
 
             default:
                 break
