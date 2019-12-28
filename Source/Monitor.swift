@@ -32,7 +32,7 @@ public class Monitor {
 
     public enum Dispatch<A: Decodable, S: Decodable> {
         case action(A)
-        case jumpToAction(A)
+        case jumpToAction(S)
         case jumpToState(S)
         case `import`(Import<A, S>)
         case none
@@ -97,6 +97,7 @@ public class Monitor {
         let type = action["type"] as? String ?? ""
 
         switch ControlTypes(rawValue: type) {
+
         case .jumpToState?:
             guard let json = state.data(using: .utf8) else { return .none }
             guard let stateObject = try? JSONDecoder().decode(S.self, from: json) else { return .none }
@@ -104,7 +105,7 @@ public class Monitor {
 
         case .jumpToAction?:
             guard let json = state.data(using: .utf8) else { return .none }
-            guard let stateObject = try? JSONDecoder().decode(A.self, from: json) else { return .none }
+            guard let stateObject = try? JSONDecoder().decode(S.self, from: json) else { return .none }
             return .jumpToAction(stateObject)
 
         default:
