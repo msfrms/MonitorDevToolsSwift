@@ -47,3 +47,13 @@ extension DevToolsAction {
         ]
     }
 }
+
+public struct DevToolsImport<A: Decodable, S: Decodable>: Decodable {
+
+    let actionsById: [String: A]
+    let computedStates: [S]
+    let currentStateIndex: Int
+    let nextActionId: Int
+    let skippedActionIds: [Int]
+    let stagedActionIds: [Int]
+}

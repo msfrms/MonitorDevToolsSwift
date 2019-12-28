@@ -21,14 +21,15 @@ public class Monitor {
         case action = "ACTION"
         case start = "START"
         case `init` = "INIT"
+        case `import` = "IMPORT"
         case dispatch = "DISPATCH"
     }
 
-    public enum Dispatch {
-        case action(String)
-        case jumpToAction(String)
-        case jumpToState(String)
-        case `import`(String)
+    public enum Dispatch<A: Decodable, S: Decodable> {
+        case action(A)
+        case jumpToAction(A)
+        case jumpToState(S)
+        case `import`(DevToolsImport<A, S>)
         case none
     }
 
@@ -84,7 +85,7 @@ public class Monitor {
         client.emit(eventName: "log", data: payload as AnyObject)
     }
 
-    private func dispatch(message: [String: Any]) -> Dispatch {
+    private func dispatch<A: Decodable, S: Decodable>(message: [String: Any]) -> Dispatch<A, S> {
         guard let action = message["action"] as? [String: Any] else { return .none }
 
         let state = message["state"] as? String ?? ""
@@ -92,28 +93,42 @@ public class Monitor {
 
         switch ControlTypes(rawValue: type) {
         case .jumpToState?:
-            return .jumpToState(state)
+            guard let json = state.data(using: .utf8) else { return .none }
+            guard let stateObject = try? JSONDecoder().decode(S.self, from: json) else { return .none }
+            return .jumpToState(stateObject)
 
         case .jumpToAction?:
-            return .jumpToAction(state)
+            guard let json = state.data(using: .utf8) else { return .none }
+            guard let stateObject = try? JSONDecoder().decode(A.self, from: json) else { return .none }
+            return .jumpToAction(stateObject)
 
         default:
             return .none
         }
     }
 
-    public func observe(callback: @escaping (Dispatch) -> Void) {
+    public func observe<A: Decodable, S: Decodable>(callback: @escaping (Dispatch<A, S>) -> Void) {
         client.on(eventName: "sc-\(self.id)") { channel, message in
             guard let msg = message as? [String: Any] else { return }
             guard let type = msg["type"] as? String else { return }
 
             switch Types(rawValue: type) {
             case .action?:
-                let payload = msg["action"] as? String ?? ""
-                callback(.action(payload))
+                guard let payload = msg["action"] as? String else { return }
+                guard let json = payload.data(using: .utf8) else { return }
+                guard let action = try? JSONDecoder().decode(A.self, from: json) else { return }
+                callback(.action(action))
 
             case .dispatch?:
                 callback(self.dispatch(message: msg))
+
+            case .import?:
+                guard let state = msg["state"] as? String else { return }
+                guard let json = state.data(using: .utf8) else { return }
+                guard let devToolsImport = try? JSONDecoder().decode(DevToolsImport<A, S>.self, from: json) else {
+                    return
+                }
+                callback(.import(devToolsImport))
 
             default:
                 break
