@@ -48,9 +48,20 @@ extension DevToolsAction {
     }
 }
 
+public struct JsAction<P: Decodable>: Decodable {
+    public let type: String
+    public let payload: P
+}
+
+public struct ImportAction<P: Decodable>: Decodable {
+    public let action: JsAction<P>
+    public let timestamp: Int64
+    public let type: String
+}
+
 public struct DevToolsImport<A: Decodable, S: Decodable>: Decodable {
 
-    public let actionsById: [String: A]
+    public let actionsById: [String: ImportAction<A>]
     public let computedStates: [S]
     public let currentStateIndex: Int
     public let nextActionId: Int
