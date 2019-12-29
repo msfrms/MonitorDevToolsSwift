@@ -14,6 +14,7 @@ public class Monitor {
     private enum ControlTypes: String {
         case jumpToState = "JUMP_TO_STATE"
         case jumpToAction = "JUMP_TO_ACTION"
+        case reset = "RESET"
         case unknown
     }
 
@@ -35,6 +36,7 @@ public class Monitor {
         case jumpToAction(S)
         case jumpToState(S)
         case `import`(Import<A, S>)
+        case reset
         case none
     }
 
@@ -74,14 +76,18 @@ public class Monitor {
             guard let type = action["type"] as? String else { return }
             guard type == Types.start.rawValue else { return }
 
-            let initAction =  [
-                "type": Types.`init`.rawValue,
-                "id": self.id
-            ]
-            self.client.emit(eventName: "log", data: initAction as AnyObject)
+            self.sendInit()
         }
 
         client.connect()
+    }
+
+    private func sendInit() {
+        let initAction =  [
+            "type": Types.`init`.rawValue,
+            "id": self.id
+        ]
+        self.client.emit(eventName: "log", data: initAction as AnyObject)
     }
 
     public func send<A: Encodable, S: Encodable>(action: DevToolsAction<A, S>) {
@@ -108,13 +114,16 @@ public class Monitor {
             guard let stateObject = try? JSONDecoder().decode(S.self, from: json) else { return .none }
             return .jumpToAction(stateObject)
 
+        case .reset:
+            return .reset
+
         default:
             return .none
         }
     }
 
     public func observe<A: Decodable, S: Decodable>(callback: @escaping (Dispatch<A, S>) -> Void) {
-        client.on(eventName: "sc-\(self.id)") { channel, message in
+        client.on(eventName: "sc-\(self.id)") { [unowned self] channel, message in
             guard let msg = message as? [String: Any] else { return }
             guard let type = msg["type"] as? String else { return }
 
@@ -126,7 +135,14 @@ public class Monitor {
                 callback(.action(action))
 
             case .dispatch?:
-                callback(self.dispatch(message: msg))
+                let dispatchAction: Dispatch<A, S> = self.dispatch(message: msg)
+                switch dispatchAction {
+                case .reset:
+                    self.sendInit()
+                default:
+                    break
+                }
+                callback(dispatchAction)
 
             case .import?:
                 guard let state = msg["state"] as? String else { return }
@@ -143,9 +159,8 @@ public class Monitor {
                     }
                 }
                 let states: [S] = devToolsImport.computedStates.compactMap { $0["state"] }
-                callback(.import(Import<A, S>(
-                    actions: actions,
-                    states: states)))
+                self.sendInit()
+                callback(.import(Import<A, S>(actions: actions, states: states)))
 
             default:
                 break
