@@ -6,3 +6,5 @@ Swift SDK for https://github.com/reduxjs/redux-devtools
 * [Chrome extension install](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
 
 [Example Video](https://youtu.be/D_FhNVw7tg4)
+
+[Example Project](https://github.com/msfrms/GwentBrowser)
