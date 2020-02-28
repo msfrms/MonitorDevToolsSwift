@@ -7,4 +7,6 @@ Swift SDK for https://github.com/reduxjs/redux-devtools
 
 [Example Video](https://youtu.be/D_FhNVw7tg4)
 
+[Unit Test Code Generation Video](https://youtu.be/C4guP-ybC1Y)
+
 [Example Project](https://github.com/msfrms/GwentBrowser)
